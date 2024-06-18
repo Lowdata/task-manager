@@ -49,3 +49,43 @@ export const getTaskByIdForUser = (
 
     return task;
 });
+
+export const updateTaskForUser = (
+  userId: string,
+  taskId: string,
+  updatedTaskData: Partial<Task>
+): T.UIO<Task> =>
+  T.succeedWith(() => {
+    const user = db.getUser(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const taskIndex = user.tasks.findIndex((t) => t.id === taskId);
+    if (taskIndex === -1) {
+      throw new Error("Task not found");
+    }
+
+    const updatedTask = { ...user.tasks[taskIndex], ...updatedTaskData };
+    user.tasks[taskIndex] = updatedTask;
+
+    return updatedTask;
+  });
+
+export const deleteTaskForUser = (
+  userId: string,
+  taskId: string
+): T.UIO<void> =>
+  T.succeedWith(() => {
+    const user = db.getUser(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const taskIndex = user.tasks.findIndex((t) => t.id === taskId);
+    if (taskIndex === -1) {
+      throw new Error("Task not found");
+    }
+
+    user.tasks.splice(taskIndex, 1);
+});

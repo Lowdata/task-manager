@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as T from "@effect-ts/core/Effect";
 import { pipe } from "@effect-ts/core/Function";
-import { createTaskForUser, getTaskByIdForUser, getUserTasks } from "../services/taskService";
+import { createTaskForUser, deleteTaskForUser, getTaskByIdForUser, getUserTasks, updateTaskForUser } from "../services/taskService";
 import { db } from "../database/inMemoryDb";
 import { Task } from "../model/task";
 
@@ -53,6 +53,42 @@ export const getTaskByIdForUserController = (req: Request, res: Response) => {
           res.status(404).json({ message: (error as Error).message })
         ),
       (task) => T.succeedWith(() => res.status(200).json(task))
+    )
+  );
+
+  T.run(effect);
+};
+
+
+export const updateTaskForUserController = (req: Request, res: Response) => {
+  const { user_id, task_id } = req.params;
+  const updatedTaskData = req.body;
+
+  const effect = pipe(
+    updateTaskForUser(user_id, task_id, updatedTaskData),
+    T.foldM(
+      (error) =>
+        T.succeedWith(() =>
+          res.status(500).json({ message: (error as Error).message })
+        ),
+      (task) => T.succeedWith(() => res.status(200).json(task))
+    )
+  );
+
+  T.run(effect);
+};
+
+export const deleteTaskForUserController = (req: Request, res: Response) => {
+  const { user_id, task_id } = req.params;
+
+  const effect = pipe(
+    deleteTaskForUser(user_id, task_id),
+    T.foldM(
+      (error) =>
+        T.succeedWith(() =>
+          res.status(500).json({ message: (error as Error).message })
+        ),
+      () => T.succeedWith(() => res.status(204).send())
     )
   );
 
