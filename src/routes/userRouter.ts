@@ -15,23 +15,31 @@ const router = Router();
 
 router.post("/", createUserController);
 router.post("/:user_id/tasks", validateUserId, createTaskForUserController);
+
+
 router.get("/:user_id/tasks", validateUserId, getUserTasksController);
+
+
 router.get(
   "/:user_id/tasks/:task_id",
-  validateUserId,
   validateTaskId,
+  validateUserId,
   getTaskByIdForUserController
 );
+
+
 router.put(
   "/:user_id/tasks/:task_id",
-  validateUserId,
   validateTaskId,
+  validateUserId,
   updateTaskForUserController
 );
+
+
 router.delete(
-    "/:user_id/tasks/:task_id",
-    validateUserId,
-    validateTaskId,
-    deleteTaskForUserController
-)
+  "/:user_id/tasks/:task_id",
+  validateTaskId,
+  validateUserId,
+  deleteTaskForUserController
+);
 export default router;

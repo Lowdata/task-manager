@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "209234eb-a90b-4d18-8b0f-c912c29c7bf3",
+		"name": "Task-Manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36393123"
+	},
+	"item": [
+		{
+			"name": "Welcome to Task Manager",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}",
+					"host": [
+						"{{base-url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/users?name=John Doe",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "John Doe"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create task for user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{base-url}}/user/5ZXzciQ8ynWtLVbtmAr9bW/tasks",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"user",
+						"5ZXzciQ8ynWtLVbtmAr9bW",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update task for user",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{base-url}}/user/5ZXzciQ8ynWtLVbtmAr9bW/tasks/np8TVoFkwJxSXvqoC83mPE",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"user",
+						"5ZXzciQ8ynWtLVbtmAr9bW",
+						"tasks",
+						"np8TVoFkwJxSXvqoC83mPE"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get task by id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{base-url}}/user/5ZXzciQ8ynWtLVbtmAr9bW/tasks",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"user",
+						"5ZXzciQ8ynWtLVbtmAr9bW",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all tasks for user",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{base-url}}/user/5ZXzciQ8ynWtLVbtmAr9bW/tasks",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"user",
+						"5ZXzciQ8ynWtLVbtmAr9bW",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete task for user",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{base-url}}/user/5ZXzciQ8ynWtLVbtmAr9bW/tasks",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"user",
+						"5ZXzciQ8ynWtLVbtmAr9bW",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
