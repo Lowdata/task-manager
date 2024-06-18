@@ -14,7 +14,7 @@ Before running the application, ensure you have Node.js installed on your machin
 
    ```bash
    git clone https://github.com/Lowdata/task-manager/tree/main
-   cd <repository-folder>
+   cd task-manager
    npm install
    ```
 
