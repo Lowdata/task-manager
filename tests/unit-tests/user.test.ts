@@ -20,7 +20,7 @@ describe("userService", () => {
           console.log("User created:", user); // Log the user object
           return user;
         })
-      ) // Chain to modify the return type if needed
+      ) 
     );
 
     const userOrError = await T.runPromise(result);
@@ -48,7 +48,7 @@ describe("userService", () => {
           console.log("User created:", user); // Log the user object
           return user;
         })
-      ) // Chain to modify the return type if needed
+      ) 
     );
 
     const userOrError = await T.runPromise(result);

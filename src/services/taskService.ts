@@ -31,3 +31,21 @@ export const getUserTasks = (userId: string): T.UIO<Task[]> =>
     }
     return user.tasks;
 });
+
+export const getTaskByIdForUser = (
+  userId: string,
+  taskId: string
+): T.UIO<Task> =>
+  T.succeedWith(() => {
+    const user = db.getUser(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const task = user.tasks.find((t) => t.id === taskId);
+    if (!task) {
+      throw new Error("Task not found");
+    }
+
+    return task;
+});
