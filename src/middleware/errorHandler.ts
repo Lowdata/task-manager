@@ -2,9 +2,9 @@ import shortUUID from "short-uuid";
 import { Request, Response, NextFunction } from "express";
 
 // user id validator
-const isValidId = (userId: string): boolean=>{
+const isValidId = (user_id: string): boolean=>{
     const translator = shortUUID();
-    return translator.validate(userId);
+    return translator.validate(user_id);
 }
 
 export const validateUserId = (
@@ -12,9 +12,9 @@ export const validateUserId = (
   res: Response,
   next: NextFunction
 ) => {
-  const { userId } = req.params;
-  if (!isValidId(userId)) {
-    return res.status(400).json({ message: "Invalid userId format" });
+  const { user_id } = req.params;
+  if (!isValidId(user_id)) {
+    return res.status(400).json({ message: "User not found" });
   }
   next();
 };
@@ -24,8 +24,8 @@ export const validateTaskId = (
   res: Response,
   next: NextFunction
 ) => {
-  const { taskId } = req.params;
-  if (!isValidId(taskId)) {
+  const { task_id } = req.params;
+  if (!isValidId(task_id)) {
     return res.status(400).json({ message: "Invalid taskId format" });
   }
   next();
