@@ -26,7 +26,7 @@ export const validateTaskId = (
 ) => {
   const { task_id } = req.params;
   if (!isValidId(task_id)) {
-    return res.status(400).json({ message: "Invalid taskId format" });
+    return res.status(400).json({ message: "Task not found" });
   }
   next();
 };

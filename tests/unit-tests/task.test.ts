@@ -1,18 +1,23 @@
 import * as T from "@effect-ts/core/Effect";
 import {
   createTaskForUser,
+  deleteTaskForUser,
   getUserTasks,
+  updateTaskForUser,
 } from "../../src/services/taskService";
 import { db } from "../../src/database/inMemoryDb";
-import { Task } from "../../src/model/task"; // Assuming this is where your Task type is defined
+import { Task } from "../../src/model/task"; 
+import app from "../../src/app";
+import { User } from "../../src/model/user";
+import { Request, request } from "express";
 
 describe("Task Service", () => {
   beforeEach(() => {
-    db.clearUsers(); // Clear users before each test
+    db.clearUsers(); 
   });
 
   it("should create a task for a user", async () => {
-    // Mock user creation for testing
+  
     const userId = "user1";
     db.addUser({ id: userId, name: "Test User", tasks: [] });
 
@@ -20,7 +25,7 @@ describe("Task Service", () => {
       title: "Test Task",
       description: "This is a test task",
       dueDate: new Date(),
-      status: "To Do", // Correct status value from Task type
+      status: "To Do",
     };
 
     const result = await T.runPromise(createTaskForUser(userId, taskData));
@@ -29,7 +34,7 @@ describe("Task Service", () => {
     expect(result.title).toBe(taskData.title);
     expect(result.description).toBe(taskData.description);
     expect(result.status).toBe(taskData.status);
-    expect(db.getUsers()[0].tasks.length).toBe(1); // Check if task was added to user
+    expect(db.getUsers()[0].tasks.length).toBe(1); 
   });
 
   it("should throw an error when user is not found", async () => {
@@ -38,7 +43,7 @@ describe("Task Service", () => {
       title: "Test Task",
       description: "This is a test task",
       dueDate: new Date(),
-      status: "To Do", // Correct status value from Task type
+      status: "To Do", 
     };
 
     await expect(
@@ -79,5 +84,160 @@ describe("Task Service", () => {
     await expect(T.runPromise(getUserTasks(userId))).rejects.toThrowError(
       "User not found"
     );
+  });
+});
+
+describe("getUserTasks", () => {
+  beforeEach(() => {
+    db.clearUsers();
+  });
+
+  it("should fetch tasks for an existing user", async () => {
+    const userId = "user1";
+    const tasks: Task[] = [
+      {
+        id: "task1",
+        title: "Task 1",
+        description: "Task 1 description",
+        dueDate: new Date(),
+        status: "To Do",
+      },
+      {
+        id: "task2",
+        title: "Task 2",
+        description: "Task 2 description",
+        dueDate: new Date(),
+        status: "In Progress",
+      },
+    ];
+
+    const user: User = {
+      id: userId,
+      name: "Test User",
+      tasks,
+    };
+    db.addUser(user);
+
+    const effect = T.runPromise(getUserTasks(userId));
+    const resultTasks = await effect;
+
+    expect(resultTasks).toEqual(tasks);
+  });
+
+  it("should return empty array for a user with no tasks", async () => {
+    const userId = "user1";
+    const user: User = {
+      id: userId,
+      name: "Test User",
+      tasks: [],
+    };
+    db.addUser(user);
+
+    const effect = T.runPromise(getUserTasks(userId));
+    const resultTasks = await effect;
+
+    expect(resultTasks).toEqual([]);
+  });
+
+  it("should throw an error for a non-existent user", async () => {
+    const userId = "nonexistentUser";
+
+    await expect(T.runPromise(getUserTasks(userId))).rejects.toThrowError(
+      "User not found"
+    );
+  });
+});
+
+
+describe("updateTaskForUser", () => {
+  beforeEach(() => {
+    db.clearUsers();
+  });
+
+  it("should update the task for a valid user and task id", async () => {
+    const userId = "user1";
+    const taskId = "task1";
+    const task: Task = {
+      id: taskId,
+      title: "Test Task",
+      description: "This is a test task",
+      dueDate: new Date(),
+      status: "To Do",
+    };
+    db.addUser({ id: userId, name: "Test User", tasks: [task] });
+
+    const updatedTask = { title: "Updated Task" };
+
+    const result = await T.runPromise(
+      updateTaskForUser(userId, taskId, updatedTask)
+    );
+
+    expect(result.title).toBe("Updated Task");
+    expect(result.description).toBe("This is a test task");
+  });
+
+  it("should throw an error if the user is not found", async () => {
+    const userId = "nonexistentUser";
+    const taskId = "task1";
+    const updatedTask = { title: "Updated Task" };
+
+    await expect(
+      T.runPromise(updateTaskForUser(userId, taskId, updatedTask))
+    ).rejects.toThrowError("User not found");
+  });
+
+  it("should throw an error if the task is not found", async () => {
+    const userId = "user1";
+    const taskId = "nonexistentTask";
+    db.addUser({ id: userId, name: "Test User", tasks: [] });
+
+    const updatedTask = { title: "Updated Task" };
+
+    await expect(
+      T.runPromise(updateTaskForUser(userId, taskId, updatedTask))
+    ).rejects.toThrowError("Task not found");
+  });
+});
+
+describe("deleteTaskForUser", () => {
+  beforeEach(() => {
+    db.clearUsers();
+  });
+
+  it("should delete the task for a valid user and task id", async () => {
+    const userId = "user1";
+    const taskId = "task1";
+    const task: Task = {
+      id: taskId,
+      title: "Test Task",
+      description: "This is a test task",
+      dueDate: new Date(),
+      status: "To Do",
+    };
+    db.addUser({ id: userId, name: "Test User", tasks: [task] });
+
+    await T.runPromise(deleteTaskForUser(userId, taskId));
+
+    const user = db.getUser(userId);
+    expect(user?.tasks).toHaveLength(0);
+  });
+
+  it("should throw an error if the user is not found", async () => {
+    const userId = "nonexistentUser";
+    const taskId = "task1";
+
+    await expect(
+      T.runPromise(deleteTaskForUser(userId, taskId))
+    ).rejects.toThrowError("User not found");
+  });
+
+  it("should throw an error if the task is not found", async () => {
+    const userId = "user1";
+    const taskId = "nonexistentTask";
+    db.addUser({ id: userId, name: "Test User", tasks: [] });
+
+    await expect(
+      T.runPromise(deleteTaskForUser(userId, taskId))
+    ).rejects.toThrowError("Task not found");
   });
 });
