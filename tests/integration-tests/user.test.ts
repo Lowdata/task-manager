@@ -1,6 +1,5 @@
-import app from '../../src/app';
-import { db } from '../../src/database/inMemoryDb';
-import request from 'supertest'
+import app from "../../src/app";
+import request from "supertest";
 
 describe("User API", () => {
   it("should create a user", async () => {

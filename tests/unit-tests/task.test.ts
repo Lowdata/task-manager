@@ -7,9 +7,7 @@ import {
 } from "../../src/services/taskService";
 import { db } from "../../src/database/inMemoryDb";
 import { Task } from "../../src/model/task"; 
-import app from "../../src/app";
 import { User } from "../../src/model/user";
-import { Request, request } from "express";
 
 describe("Task Service", () => {
   beforeEach(() => {

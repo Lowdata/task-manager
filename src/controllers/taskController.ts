@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import * as T from "@effect-ts/core/Effect";
 import { pipe } from "@effect-ts/core/Function";
 import { createTaskForUser, deleteTaskForUser, getTaskByIdForUser, getUserTasks, updateTaskForUser } from "../services/taskService";
-import { db } from "../database/inMemoryDb";
-import { Task } from "../model/task";
+
 
 
 export const createTaskForUserController = (req: Request, res: Response) => {

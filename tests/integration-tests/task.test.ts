@@ -42,7 +42,7 @@ describe("Task API", () => {
     };
 
     const response = await request(app)
-      .post(`/users/nonExistentUserId/tasks`)
+      .post("/users/nonExistentUserId/tasks")
       .send(task);
 
     expect(response.status).toBe(400);
@@ -103,7 +103,7 @@ describe("PUT /users/:user_id/tasks/:task_id", () => {
       .send(updatedTask);
 
     expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty("message", "Task not found" || "");
+    expect(response.body).toHaveProperty("message", "Task not found");
   });
 
   it("should return 400 for non-existent task", async () => {
@@ -155,7 +155,7 @@ describe("DELETE /users/:user_id/tasks/:task_id", () => {
     );
 
     expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty("message", "Task not found" || "User not found");
+    expect(response.body).toHaveProperty("message", "Task not found");
   });
 
   it("should return 400 for non-existent task", async () => {

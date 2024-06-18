@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from "express";
 const isValidId = (user_id: string): boolean=>{
     const translator = shortUUID();
     return translator.validate(user_id);
-}
+};
 
 export const validateUserId = (
   req: Request,

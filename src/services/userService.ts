@@ -1,7 +1,7 @@
 "use strict";
 
 import * as T from "@effect-ts/core/Effect";
-import { db } from '../database/inMemoryDb'
+import { db } from "../database/inMemoryDb";
 import shortUUID from "short-uuid";
 import { User } from "../model/user";
 import { Task } from "../model/task";

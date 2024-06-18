@@ -1,7 +1,6 @@
 "use strict";
 
 import { User } from "../model/user";
-import { Task } from "../model/task";
 
 class InMemoryDb {
   private users: User[] = [];
